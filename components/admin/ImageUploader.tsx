@@ -38,7 +38,11 @@ export function ImageUploader({
 
   async function handleFile(file: File) {
     setLoading(true);
-    const result = await uploadImage(bucket, file, catalogId);
+    const formData = new FormData();
+    formData.set('file', file);
+    formData.set('bucket', bucket);
+    if (catalogId) formData.set('catalogId', catalogId);
+    const result = await uploadImage(formData);
     setLoading(false);
     if (!result.success || !result.data) {
       toast.error(result.error || 'Upload failed');

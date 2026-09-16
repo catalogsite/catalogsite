@@ -26,7 +26,11 @@ export function MediaLibrary({ items, catalogs }: { items: MediaItem[]; catalogs
   async function handleFiles(files: FileList) {
     setUploading(true);
     for (const file of Array.from(files)) {
-      const result = await uploadImage(bucket, file, catalogId || null);
+      const formData = new FormData();
+      formData.set('file', file);
+      formData.set('bucket', bucket);
+      if (catalogId) formData.set('catalogId', catalogId);
+      const result = await uploadImage(formData);
       if (!result.success) toast.error(`${file.name}: ${result.error}`);
     }
     setUploading(false);

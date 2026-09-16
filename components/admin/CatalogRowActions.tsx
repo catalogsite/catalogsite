@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { Button, LinkButton } from '@/components/ui/button';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import { togglePublishCatalog, deleteCatalog } from '@/app/actions/catalogs';
-import { absoluteUrl } from '@/lib/utils';
 import { Copy, Eye, Pencil, Share2, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { CatalogWithCounts } from '@/lib/types';
@@ -15,7 +14,7 @@ export function CatalogRowActions({ catalog }: { catalog: CatalogWithCounts }) {
   const [pending, startTransition] = useTransition();
 
   function copyShareLink() {
-    const url = absoluteUrl(`/catalog/${catalog.slug}`);
+    const url = `${window.location.origin}/catalog/${catalog.slug}`;
     navigator.clipboard.writeText(url);
     toast.success('Customer share link copied');
   }
