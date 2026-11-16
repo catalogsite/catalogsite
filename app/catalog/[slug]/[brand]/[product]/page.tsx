@@ -1,5 +1,6 @@
 import { getPublicCatalog, getPublicBrand, getPublicProduct } from '@/lib/public-data';
 import { absoluteUrl, formatPrice } from '@/lib/utils';
+import { productLinkWithEnquiry, watchDisplayName } from '@/lib/whatsapp';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -41,6 +42,11 @@ export default async function PublicProductPage({ params }: { params: Params }) 
   if (!product) notFound();
 
   const price = formatPrice(product.price);
+  // Always link the customer-facing page (not /embed), so the link opens on its own.
+  const productPageUrl = absoluteUrl(`/catalog/${catalog.slug}/${brand.slug}/${product.slug}`);
+  const viewProductHref = product.external_url
+    ? productLinkWithEnquiry(product.external_url, watchDisplayName(brand.name, product.name), productPageUrl)
+    : null;
 
   return (
     <div style={{ backgroundColor: catalog.background_color, color: catalog.text_color, minHeight: '100vh' }}>
@@ -67,9 +73,9 @@ export default async function PublicProductPage({ params }: { params: Params }) 
             {product.sku && <p className="mt-1 text-xs opacity-50">SKU: {product.sku}</p>}
             {product.description && <p className="mt-5 text-sm leading-relaxed opacity-80">{product.description}</p>}
 
-            {product.external_url && (
+            {viewProductHref && (
               <a
-                href={product.external_url}
+                href={viewProductHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-neutral-700"
