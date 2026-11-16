@@ -4,7 +4,8 @@ import { productLinkWithEnquiry, watchDisplayName } from '@/lib/whatsapp';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Package, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Package } from 'lucide-react';
+import { ProductActionButton } from '@/components/catalog/ProductActionButton';
 import { notFound } from 'next/navigation';
 
 interface Params {
@@ -73,16 +74,8 @@ export default async function PublicProductPage({ params }: { params: Params }) 
             {product.sku && <p className="mt-1 text-xs opacity-50">SKU: {product.sku}</p>}
             {product.description && <p className="mt-5 text-sm leading-relaxed opacity-80">{product.description}</p>}
 
-            {viewProductHref && (
-              <a
-                href={viewProductHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex w-fit items-center gap-2 rounded-full bg-neutral-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-neutral-700"
-              >
-                View Product <ExternalLink className="h-3.5 w-3.5" />
-              </a>
-            )}
+            {viewProductHref && <ProductActionButton href={viewProductHref} className="mt-6" />}
+            
           </div>
         </div>
       </div>
